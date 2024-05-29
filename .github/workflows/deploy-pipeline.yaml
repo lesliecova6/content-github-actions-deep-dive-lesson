@@ -2,7 +2,6 @@ name: Deploy Lambda Function
 on: [push]
 
 jobs:
-
   lint:
     runs-on: ubuntu-latest
     steps: 
@@ -50,7 +49,7 @@ jobs:
     needs: build
     steps:
       - name: Create release
-        id: create-release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }} # This token is provided by Actions, you do not need to create your own token
@@ -64,13 +63,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: zipped-bundle
-      - name: upload release asset
+      - name: Upload release asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
         with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./${{ github.sha}}.zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ github.sha }}.zip
           asset_name: source_code_with_libraries.zip
           asset_content_type: application/zip
         
